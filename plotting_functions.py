@@ -5,15 +5,8 @@ Processes fitbit sleep data files, uploads data into fitbit dataframe, outputs g
 
 import pandas as pd
 import numpy as np
-#import datetime as dt  
 import matplotlib.pyplot as plt  
-#from datetime import datetime                          
 import streamlit as st
-#try: 
-#    json_normalize = pd.json_normalize
-#except:
-#    from pandas.io.json import json_normalize
-
 try:
     import plotly.express as px
     import plotly.graph_objects as go 
@@ -31,6 +24,12 @@ import copy
 
 import time
 import numpy as np
+import os
+if 'DYNO' in os.environ:
+    heroku = True
+else:
+    heroku = False
+
 # Function: process_fitbit_sleep_data()
 # fileList: A list of fitbit sleep data files eg ["sleep-2020-03-09.json","sleep-2020-04-08.json".....]
 # Returns a dataframe with the following columns:
@@ -287,6 +286,12 @@ def df_to_plotly(df,log=False):
     return {'z': df.values.tolist(),
             'x': df.columns.tolist(),
             'y': df.index.tolist()}
+
+
+def plot_df_plotly(sleep_df):
+    fig = go.Figure(data=go.Heatmap(df_to_plotly(sleep_df,log=True)))
+    st.write(fig)
+
 def plot_imshow_plotly(sleep_df):
 
     heat = go.Heatmap(df_to_plotly(sleep_df),colorscale=sns_colorscale)
@@ -302,10 +307,6 @@ def plot_imshow_plotly(sleep_df):
     
     fig=go.Figure(data=[heat], layout=layout)      
 
-    st.write(fig)
-
-def plot_df_plotly(sleep_df):
-    fig = go.Figure(data=go.Heatmap(df_to_plotly(sleep_df,log=True)))
     st.write(fig)
 
 

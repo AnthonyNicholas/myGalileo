@@ -44,10 +44,10 @@ def process_fitbit_sleep_data(fileList):
         detail_df = json_normalize(input_df['levels'])
         sleep_df = pd.concat([input_df, detail_df], axis =1)
         full_sleep_df = pd.concat([full_sleep_df, sleep_df], sort=True)
-        
-        progress_bar.progress(cnt/len(fileList))
-        status_text.text("Data Reading %i%% Complete" % float(cnt/len(fileList)))    
         cnt+=1
+        progress_bar.progress(cnt/len(fileList))
+        status_text.text("Data Reading {0} Complete".format(100*float(cnt/len(fileList))))    
+        
 
     full_sleep_df['dateOfSleep']= pd.to_datetime(full_sleep_df['dateOfSleep'])
     full_sleep_df['dayOfWeek'] = full_sleep_df['dateOfSleep'].dt.day_name()

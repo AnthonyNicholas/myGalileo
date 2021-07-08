@@ -17,6 +17,7 @@ CACHED = True
 BIG_DATA = True
 import os
 import glob
+import requests
 # sense if running on heroku
 if 'DYNO' in os.environ:
     heroku = False
@@ -24,10 +25,21 @@ else:
     heroku = True
 
 if __name__ == "__main__":  
+    st.title('The Quantified Sleep')
+
+    API_TOKEN = st.text_input('Please Enter Your Fitbit API token:')
+    st.text("API TOKEN is", API_TOKEN)
+    URL = "https://api.fitbit.com/1.2/user/~/sleep/date/2020-08-18.json"
+    responses = requests.request("GET",url,data=payload,headers=headers)
+    radio_value = st.sidebar.radio("\
+		Are you more interested in Sleep/Exercise/the interplay between them"
+		,["Sleep","Exercise","Interplay"])
+    # radio_value = st.sidebar.radio("Target Number of Samples",[10,20,30])
+
     if CACHED:
-        st.title('The Quantified Sleep')
 
         fileList = ["sleep-2020-03-09.json","sleep-2020-04-08.json","sleep-2020-05-08.json","sleep-2020-06-07.json","sleep-2020-07-07.json"]
+        fileList=[ str("original_data/")+str(f) for f in fileList]
         st.markdown('Analysis for sleep quality')
 
         st.markdown('''We are mining and exploring sleep data fro
@@ -35,8 +47,7 @@ if __name__ == "__main__":
         '''.format(str('2020-03-09')))
     else:
         print('add methods for user upload data')
-    sleep_df = utils.process_fitbit_sleep_data(fileList)
-
+        
 
     if not DEBUG_WITHOUT_PLOTLY:
         if BIG_DATA:
@@ -51,6 +62,8 @@ if __name__ == "__main__":
         #st.markdown('''---''')
 
         #pf.plot_df_plotly(sleep_df)#,'rem.%','deep.%')
+        sleep_df = utils.process_fitbit_sleep_data(fileList)
+
         sleep_df.dropna(axis=1, how='any',inplace=True, thresh=4)
         sleep_df = pf.try_to_impute(sleep_df)       
         sleep_df.dropna(axis=1, how='any',inplace=True, thresh=0)

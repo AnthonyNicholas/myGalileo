@@ -1,7 +1,7 @@
 # innerGalileo
 [![Build Status](https://travis-ci.org/fun-zoological-computing/innerGalileo.svg?branch=master)](https://travis-ci.org/fun-zoological-computing/innerGalileo)
 
-
+![for_git_hub.png](https://github.com/fun-zoological-computing/innerGalileo/blob/master/for_git_hub.png)
 The goal of the inner Galileo project is to quantify & visualize metrics related to personal health - sleep, fitness etc. 
 
 Galileo was a pioneer in empericism via quantification. In this quantified self project we want to get insights into our individual and personal functioning.
